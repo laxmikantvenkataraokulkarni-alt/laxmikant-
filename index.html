@@ -3,11 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#2c3e50">
-    <meta name="description" content="Middle Class Daily Expense Tracker - Track your daily spending with ease">
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect fill='%232c3e50' width='192' height='192'/><text x='96' y='130' font-size='100' text-anchor='middle' fill='%2327ae60' font-weight='bold'>₹</text></svg>">
-    <title>Expense Tracker Pro</title>
+    <title>Middle Class Daily Expense Tracker</title>
     <style>
         :root {
             --primary: #2c3e50;
@@ -15,85 +11,130 @@
             --danger: #e74c3c;
             --light: #ecf0f1;
             --dark: #34495e;
-            --warning: #f39c12;
-            --info: #3498db;
         }
-        * { transition: background-color 0.3s, color 0.3s; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f5f7fa; margin: 0; padding: 20px; color: var(--dark); }
-        body.dark-mode { background-color: #1a1a1a; color: #e0e0e0; }
-        .container { max-width: 900px; margin: 0 auto; background: white; padding: 25px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        body.dark-mode .container { background: #2a2a2a; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
-        h2, h3 { text-align: center; color: var(--primary); margin-top: 0; }
-        body.dark-mode h2, body.dark-mode h3 { color: #64b5f6; }
-        #auth-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--primary); display: flex; justify-content: center; align-items: center; z-index: 1000; }
-        .auth-box { background: white; padding: 30px; border-radius: 8px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.3); width: 320px; }
-        body.dark-mode .auth-box { background: #2a2a2a; color: #e0e0e0; }
-        input, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; background: white; color: #333; }
-        body.dark-mode input, body.dark-mode select { background: #333; color: #e0e0e0; border-color: #555; }
-        button { width: 100%; padding: 12px; background: var(--secondary); color: white; border: none; border-radius: 5px; font-size: 16px; cursor: pointer; font-weight: bold; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 20px;
+            color: var(--dark);
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        h2, h3 {
+            text-align: center;
+            color: var(--primary);
+            margin-top: 0;
+        }
+        #auth-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--primary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .auth-box {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            width: 320px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+        }
         button:hover { opacity: 0.9; }
         .btn-danger { background: var(--danger); }
-        .btn-link { background: none; color: #3498db; border: none; padding: 5px; font-size: 14px; cursor: pointer; text-decoration: underline; }
+        .btn-link { background: none; color: #3498db; border: none; padding: 5px; font-size: 14px; cursor: pointer; text-decoration: underline;}
         .btn-secondary { background: #7f8c8d; margin-top: 5px; }
-        .btn-small { width: auto; padding: 5px 10px; font-size: 12px; }
-        .btn-dark-toggle { background: #34495e; position: fixed; top: 20px; right: 20px; z-index: 999; }
-        .info-bar { display: flex; justify-content: space-between; background: var(--light); padding: 10px; border-radius: 5px; font-size: 14px; font-weight: bold; margin-bottom: 20px; flex-wrap: wrap; }
-        body.dark-mode .info-bar { background: #333; color: #e0e0e0; }
-        .summary-box { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
-        .card { background: #e8f4fd; padding: 15px; text-align: center; border-radius: 6px; font-size: 14px; border-left: 4px solid var(--info); }
-        body.dark-mode .card { background: #1e3a5f; color: #e0e0e0; border-left-color: #64b5f6; }
-        .card.warning { background: #fff3cd; border-left-color: var(--warning); }
-        body.dark-mode .card.warning { background: #4a3c1a; border-left-color: #ffb74d; }
-        .card span { display: block; font-size: 18px; font-weight: bold; color: var(--primary); margin-top: 5px; }
-        body.dark-mode .card span { color: #64b5f6; }
-        .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid var(--light); flex-wrap: wrap; }
-        body.dark-mode .tabs { border-bottom-color: #333; }
-        .tab-btn { width: auto; padding: 10px 20px; background: transparent; color: var(--dark); border: none; border-bottom: 3px solid transparent; cursor: pointer; font-weight: bold; }
-        body.dark-mode .tab-btn { color: #e0e0e0; }
-        .tab-btn.active { border-bottom-color: var(--secondary); color: var(--secondary); }
-        .tab-content { display: none; }
-        .tab-content.active { display: block; }
-        .history-list { margin-top: 20px; max-height: 300px; overflow-y: auto; }
-        .item { display: flex; justify-content: space-between; align-items: center; background: #f9f9f9; padding: 10px; margin-bottom: 8px; border-left: 5px solid var(--secondary); border-radius: 4px; }
-        body.dark-mode .item { background: #333; border-left-color: #27ae60; }
-        .item.undoing { border-left-color: var(--danger); background: #fde8e8; }
-        body.dark-mode .item.undoing { background: #5a2020; border-left-color: #ff6b6b; }
-        .item-info { flex: 1; }
-        .item-date { font-size: 12px; color: #7f8c8d; }
-        body.dark-mode .item-date { color: #999; }
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
-        .stat-card { background: #f0f0f0; padding: 15px; border-radius: 8px; text-align: center; border-top: 4px solid var(--secondary); }
-        body.dark-mode .stat-card { background: #333; border-top-color: #27ae60; }
-        .stat-label { font-size: 12px; color: #7f8c8d; margin-bottom: 5px; }
-        body.dark-mode .stat-label { color: #999; }
-        .stat-value { font-size: 24px; font-weight: bold; color: var(--primary); }
-        body.dark-mode .stat-value { color: #64b5f6; }
-        .budget-input-group { display: flex; gap: 10px; margin: 15px 0; flex-wrap: wrap; }
-        .budget-input-group input { flex: 1; min-width: 150px; }
-        .budget-input-group button { width: auto; min-width: 120px; }
-        .budget-bar { background: #e0e0e0; height: 25px; border-radius: 5px; overflow: hidden; margin: 10px 0; }
-        body.dark-mode .budget-bar { background: #333; }
-        .budget-fill { height: 100%; background: linear-gradient(90deg, var(--secondary), #27ae60); display: flex; align-items: center; justify-content: center; color: white; font-size: 12px; font-weight: bold; }
-        .budget-fill.exceeded { background: linear-gradient(90deg, var(--danger), #c0392b); }
-        .recurring-item { background: #f0f8ff; padding: 12px; border-radius: 5px; margin: 10px 0; border-left: 4px solid var(--info); display: flex; justify-content: space-between; align-items: center; }
-        body.dark-mode .recurring-item { background: #1e3a5f; border-left-color: #64b5f6; }
-        .footer { text-align: center; margin-top: 25px; font-size: 12px; color: #7f8c8d; border-top: 1px solid #eee; padding-top: 10px; }
-        body.dark-mode .footer { border-top-color: #333; color: #999; }
-        .action-buttons { display: flex; gap: 10px; margin: 20px 0; flex-wrap: wrap; }
-        .action-buttons button { flex: 1; min-width: 120px; }
-        @media (max-width: 600px) { .container { padding: 15px; } .summary-box { grid-template-columns: 1fr; } .tabs { flex-direction: column; } .tab-btn { width: 100%; border-bottom: none; border-left: 3px solid transparent; } .tab-btn.active { border-left-color: var(--secondary); border-bottom: none; } }
+        .info-bar {
+            display: flex;
+            justify-content: space-between;
+            background: var(--light);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .summary-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: #e8f4fd;
+            padding: 10px;
+            text-align: center;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        .card span { display: block; font-size: 18px; font-weight: bold; color: var(--primary); margin-top: 5px;}
+        .history-list {
+            margin-top: 20px;
+            max-height: 250px;
+            overflow-y: auto;
+        }
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 8px;
+            border-left: 5px solid var(--secondary);
+            border-radius: 4px;
+        }
+        .item.undoing { border-left-color: var(--danger); background: #fde8e8;}
+        .footer {
+            text-align: center;
+            margin-top: 25px;
+            font-size: 12px;
+            color: #7f8c8d;
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+        }
     </style>
 </head>
 <body>
-    <button class="btn-dark-toggle btn-small" onclick="toggleDarkMode()">🌙</button>
+
+    <!-- Dynamic Password Security Block -->
     <div id="auth-screen">
         <div class="auth-box">
             <h2 id="auth-title">Security Lock</h2>
             <p id="auth-subtitle" style="font-size: 13px; color: gray;">Keep your family savings safe.</p>
+            
             <div id="setup-choice-buttons">
                 <button onclick="setupPasswordChoice(true)">Yes, Set Password</button>
                 <button class="btn-secondary" onclick="setupPasswordChoice(false)">No, Open Without Password</button>
             </div>
+
             <div id="password-form-block" style="display: none;">
                 <input type="password" id="password-input" placeholder="Enter Password">
                 <button id="auth-btn" onclick="verifyOrSavePassword()">Submit</button>
@@ -103,143 +144,82 @@
             </div>
         </div>
     </div>
+
+    <!-- Expense Dashboard -->
     <div class="container">
-        <h2>💰 Expense Tracker Pro</h2>
+        <h2>Expense Calculator</h2>
+        
         <div class="info-bar">
             <div id="ist-date">Date: Loading...</div>
             <div id="ist-time">IST Time: Loading...</div>
         </div>
+
         <div style="text-align: center; margin-bottom: 15px;">
             <button class="btn-link" id="lock-status-btn" onclick="toggleSecurityMode()" style="color: #2c3e50; font-weight: bold;"></button>
         </div>
+
         <div class="summary-box">
             <div class="card">Today's Spend<span>₹<span id="total-day">0</span></span></div>
             <div class="card">Monthly Total<span>₹<span id="total-month">0</span></span></div>
             <div class="card">Est. 1 Year Spend<span>₹<span id="total-year">0</span></span></div>
-            <div class="card" id="budget-card" style="display:none;"><span id="budget-status">No Budget Set</span></div>
         </div>
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('add-expense')">➕ Add</button>
-            <button class="tab-btn" onclick="switchTab('ledger')">📋 Ledger</button>
-            <button class="tab-btn" onclick="switchTab('analytics')">📊 Analytics</button>
-            <button class="tab-btn" onclick="switchTab('budget')">🎯 Budget</button>
-            <button class="tab-btn" onclick="switchTab('recurring')">🔄 Recurring</button>
-            <button class="tab-btn" onclick="switchTab('settings')">⚙️ Settings</button>
-        </div>
-        <div id="add-expense" class="tab-content active">
-            <h3>Add New Expense</h3>
-            <form id="expense-form" onsubmit="addExpense(event)">
-                <label>Select Category:</label>
-                <select id="object-purpose" onchange="toggleCustomInput()">
-                    <option value="Milk (Daily)">🥛 Daily Milk</option>
-                    <option value="Home Rent">🏠 Home Rent</option>
-                    <option value="Groceries">🛒 Groceries</option>
-                    <option value="Chai/Snacks">☕ Chai/Snacks</option>
-                    <option value="Transport">🏍️ Transport</option>
-                    <option value="Utilities">⚡ Utilities</option>
-                    <option value="Education">🎒 Education</option>
-                    <option value="Medical">💊 Medical</option>
-                    <option value="Other">✏️ Other</option>
-                </select>
-                <input type="text" id="custom-object" placeholder="Item name" style="display:none;">
-                <input type="number" id="object-price" placeholder="Price (₹)" required min="0" step="any">
-                <button type="submit">Add Expense</button>
-            </form>
-        </div>
-        <div id="ledger" class="tab-content">
-            <h3>History</h3>
-            <select id="month-filter" onchange="renderLedger()">
-                <option value="current">Current Month</option>
-                <option value="previous">Previous Month</option>
-                <option value="all">All Time</option>
+
+        <hr>
+
+        <h3>Add New Spend (Wake up to Sleep)</h3>
+        <form id="expense-form" onsubmit="addExpense(event)">
+            <label for="object-purpose">Select Purpose / Routine Object:</label>
+            <select id="object-purpose" onchange="toggleCustomInput()">
+                <option value="Milk (Daily Morning Routine)">🥛 Daily Morning Milk</option>
+                <option value="Home Rent (Monthly)">🏠 Home Rent (Monthly)</option>
+                <option value="Groceries & Vegetables">🛒 Daily Groceries / Veggies</option>
+                <option value="Chai / Snacks">☕ Chai & Snacks</option>
+                <option value="Transport / Petrol">🏍️ Petrol / Bus / Auto fare</option>
+                <option value="Electricity / Water Bill">⚡ Utility Bills</option>
+                <option value="Children Education / Pocket Money">🎒 Education / Kids</option>
+                <option value="Medical / Pharmacy">💊 Emergency / Medicine</option>
+                <option value="Other">✏️ Other Expense (Type Below)</option>
             </select>
-            <div class="history-list" id="ledger-history"></div>
+
+            <input type="text" id="custom-object" placeholder="What did you buy? Name of object" style="display:none;">
+            <input type="number" id="object-price" placeholder="Enter Price (₹)" required min="0" step="any">
+
+            <button type="submit">Add to Daily Ledger</button>
+        </form>
+
+        <hr>
+
+        <h3>Spending History Ledger</h3>
+        <div class="history-list" id="ledger-history"></div>
+
+        <div class="footer">
+            Designed & Engineered by <strong>Laxmikant</strong><br>
+            Tracking Financial Discipline Daily
         </div>
-        <div id="analytics" class="tab-content">
-            <h3>Analytics</h3>
-            <div class="stats-grid">
-                <div class="stat-card"><div class="stat-label">Today</div><div class="stat-value">₹<span id="analytics-today">0</span></div></div>
-                <div class="stat-card"><div class="stat-label">Week</div><div class="stat-value">₹<span id="analytics-week">0</span></div></div>
-                <div class="stat-card"><div class="stat-label">Month</div><div class="stat-value">₹<span id="analytics-month">0</span></div></div>
-                <div class="stat-card"><div class="stat-label">Avg/Day</div><div class="stat-value">₹<span id="analytics-avg">0</span></div></div>
-            </div>
-            <h4>By Category</h4>
-            <div id="category-breakdown"></div>
-            <h4>Top Days</h4>
-            <div id="top-days"></div>
-        </div>
-        <div id="budget" class="tab-content">
-            <h3>Budget</h3>
-            <div style="background: #f0f0f0; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
-                <p><strong>Daily Budget: ₹<span id="display-budget">0</span></strong></p>
-                <div class="budget-input-group">
-                    <input type="number" id="budget-input" placeholder="Budget (₹)" min="0" step="any">
-                    <button onclick="setBudget()">Set</button>
-                </div>
-            </div>
-            <div id="budget-progress" style="display:none;">
-                <h4>Today</h4>
-                <div class="budget-bar"><div class="budget-fill" id="budget-fill" style="width: 0%;">0%</div></div>
-                <p id="budget-message"></p>
-            </div>
-            <div id="budget-alerts"></div>
-        </div>
-        <div id="recurring" class="tab-content">
-            <h3>Recurring</h3>
-            <input type="text" id="recurring-name" placeholder="Name">
-            <input type="number" id="recurring-amount" placeholder="Amount (₹)" min="0" step="any">
-            <select id="recurring-frequency"><option value="daily">Daily</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select>
-            <button onclick="addRecurringExpense()">Add</button>
-            <h4>Active</h4>
-            <div id="recurring-list"></div>
-        </div>
-        <div id="settings" class="tab-content">
-            <h3>Settings</h3>
-            <div class="action-buttons">
-                <button onclick="exportCSV()">📥 CSV</button>
-                <button onclick="exportJSON()">💾 JSON</button>
-                <button onclick="printReport()">🖨️ Print</button>
-            </div>
-            <div class="action-buttons">
-                <button class="btn-danger" onclick="clearAllData()">🗑️ Clear</button>
-                <button onclick="installPWA()" id="install-pwa-btn" style="background: #3498db; display:none;">📱 Install</button>
-            </div>
-            <hr>
-            <p>Made by <strong>Laxmikant</strong> v2.0</p>
-        </div>
-        <div class="footer">Tracking Financial Discipline Daily</div>
     </div>
+
     <script>
         let currentPassword = localStorage.getItem('wallet_pwd') || '';
         let skipPassword = localStorage.getItem('wallet_skip_pwd') || 'false';
         let expenses = JSON.parse(localStorage.getItem('wallet_expenses')) || [];
-        let dailyBudget = parseFloat(localStorage.getItem('wallet_budget')) || 0;
-        let recurringExpenses = JSON.parse(localStorage.getItem('wallet_recurring')) || [];
         let temporaryTimers = {};
-        let deferredPrompt;
+
         window.onload = function() {
             updateLockStatusText();
             startClock();
             renderLedger();
-            updateAnalytics();
-            renderRecurringExpenses();
-            checkRecurringExpenses();
-            restoreDarkMode();
+
             const authScreen = document.getElementById('auth-screen');
             if (currentPassword) {
-                showPasswordForm("Enter Password", "App is secured.", "Unlock", true);
+                showPasswordForm("Enter Security Password", "This app is secured.", "Unlock Ledger", true);
             } else if (skipPassword === 'true') {
                 authScreen.style.display = 'none';
             } else {
                 document.getElementById('setup-choice-buttons').style.display = 'block';
                 document.getElementById('password-form-block').style.display = 'none';
             }
-            window.addEventListener('beforeinstallprompt', (e) => {
-                e.preventDefault();
-                deferredPrompt = e;
-                document.getElementById('install-pwa-btn').style.display = 'block';
-            });
-        };
+        }
+
         function showPasswordForm(title, subtitle, btnText, showForgot) {
             document.getElementById('auth-screen').style.display = 'flex';
             document.getElementById('setup-choice-buttons').style.display = 'none';
@@ -249,44 +229,51 @@
             document.getElementById('auth-btn').innerText = btnText;
             document.getElementById('forgot-btn').style.display = showForgot ? "inline-block" : "none";
         }
+
         function setupPasswordChoice(wantPassword) {
             if (wantPassword) {
-                showPasswordForm("Setup Password", "Create a password.", "Save", false);
+                showPasswordForm("Setup New Password", "Create a password to secure your daily histories.", "Save Password", false);
             } else {
                 localStorage.setItem('wallet_skip_pwd', 'true');
                 document.getElementById('auth-screen').style.display = 'none';
                 updateLockStatusText();
             }
         }
+
         function verifyOrSavePassword() {
             const input = document.getElementById('password-input').value;
-            if (!input) return alert("Enter password.");
+            if (!input) return alert("Please type a valid password.");
+
             if (!currentPassword) {
                 localStorage.setItem('wallet_pwd', input);
                 localStorage.setItem('wallet_skip_pwd', 'false');
                 currentPassword = input;
-                alert("Password saved!");
+                alert("Password saved successfully!");
             } else if (input !== currentPassword) {
-                return alert("Wrong password!");
+                return alert("Incorrect Password! Access Denied.");
             }
+
             document.getElementById('auth-screen').style.display = 'none';
             document.getElementById('password-input').value = '';
             updateLockStatusText();
         }
+
         function forgotPassword() {
-            if (confirm("Reset password?")) {
-                let newPwd = prompt("New password:");
+            if (confirm("Do you want to clear your current password and create a new one? Your ledger histories will remain safe.")) {
+                let newPwd = prompt("Enter your NEW secure password:");
                 if (newPwd) {
                     localStorage.setItem('wallet_pwd', newPwd);
+                    localStorage.setItem('wallet_skip_pwd', 'false');
                     currentPassword = newPwd;
-                    alert("Password updated!");
+                    alert("Password updated successfully! Reloading...");
                     location.reload();
                 }
             }
         }
+
         function toggleSecurityMode() {
             if (currentPassword) {
-                if (confirm("Remove password?")) {
+                if (confirm("Remove password security completely? This website will open directly next time.")) {
                     localStorage.removeItem('wallet_pwd');
                     localStorage.setItem('wallet_skip_pwd', 'true');
                     currentPassword = '';
@@ -297,10 +284,12 @@
                 location.reload();
             }
         }
+
         function updateLockStatusText() {
             const btn = document.getElementById('lock-status-btn');
-            btn.innerHTML = currentPassword ? "🔒 ENABLED" : "🔓 DISABLED";
+            btn.innerHTML = currentPassword ? "🔒 Lock Status: ENABLED (Click to Remove)" : "🔓 Lock Status: DISABLED (Click to Create Password)";
         }
+
         function startClock() {
             setInterval(() => {
                 const now = new Date();
@@ -310,376 +299,74 @@
                 document.getElementById('ist-time').innerText = "IST: " + now.toLocaleTimeString('en-IN', optionsTime);
             }, 1000);
         }
-        function switchTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
-            event.target.classList.add('active');
-            if (tabName === 'analytics') updateAnalytics();
-            if (tabName === 'budget') updateBudgetDisplay();
-        }
+
         function toggleCustomInput() {
             document.getElementById('custom-object').style.display = (document.getElementById('object-purpose').value === "Other") ? "block" : "none";
         }
+
         function addExpense(e) {
             e.preventDefault();
             const select = document.getElementById('object-purpose');
-            let purpose = select.value === "Other" ? (document.getElementById('custom-object').value || "Misc") : select.value;
+            let purpose = select.value === "Other" ? (document.getElementById('custom-object').value || "Miscellaneous") : select.value;
             const price = parseFloat(document.getElementById('object-price').value);
-            if (price <= 0) return alert("Enter valid price.");
+
             const timestamp = new Date().getTime();
-            expenses.unshift({ id: timestamp, purpose, price, date: new Date().toISOString() });
+            expenses.unshift({ id: timestamp, purpose, price });
+            
             localStorage.setItem('wallet_expenses', JSON.stringify(expenses));
             renderLedger();
-            updateAnalytics();
-            checkBudget();
+
             temporaryTimers[timestamp] = setTimeout(() => {
                 const itemEl = document.getElementById(`item-${timestamp}`);
                 if (itemEl) {
                     itemEl.classList.remove('undoing');
-                    itemEl.querySelector('.action-btn').innerHTML = "🗑️";
+                    itemEl.querySelector('.action-btn').innerHTML = "🗑️ Delete";
                 }
                 delete temporaryTimers[timestamp];
             }, 3000);
+
             document.getElementById('object-price').value = '';
             document.getElementById('custom-object').value = '';
             select.selectedIndex = 0;
             toggleCustomInput();
-            alert('✅ Added! Undo in 3s');
         }
+
         function handleActionClick(id) {
             if (temporaryTimers[id]) {
                 clearTimeout(temporaryTimers[id]);
                 delete temporaryTimers[id];
                 executeDeletion(id);
-                alert('✅ Undone!');
-            } else if (confirm("Delete?")) {
+            } else if (confirm("Delete this permanent record history?")) {
                 executeDeletion(id);
             }
         }
+
         function executeDeletion(id) {
             expenses = expenses.filter(item => item.id !== id);
             localStorage.setItem('wallet_expenses', JSON.stringify(expenses));
             renderLedger();
-            updateAnalytics();
-            checkBudget();
         }
+
         function renderLedger() {
             const container = document.getElementById('ledger-history');
             container.innerHTML = '';
-            let dayTotal = 0, monthTotal = 0;
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const currentDate = now.getDate();
-            const filterType = document.getElementById('month-filter')?.value || 'current';
-            let filteredExpenses = expenses;
-            if (filterType === 'current') {
-                filteredExpenses = expenses.filter(item => {
-                    const itemDate = new Date(item.date);
-                    return itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
-                });
-            } else if (filterType === 'previous') {
-                const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
-                const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
-                filteredExpenses = expenses.filter(item => {
-                    const itemDate = new Date(item.date);
-                    return itemDate.getMonth() === prevMonth && itemDate.getFullYear() === prevYear;
-                });
-            }
-            filteredExpenses.forEach(item => {
-                const itemDate = new Date(item.date);
-                const isToday = itemDate.getDate() === currentDate && itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear;
-                if (isToday) dayTotal += item.price;
-                monthTotal += item.price;
+            let dayTotal = 0;
+
+            expenses.forEach(item => {
+                dayTotal += item.price;
                 const isUndo = temporaryTimers[item.id] ? 'undoing' : '';
-                const label = temporaryTimers[item.id] ? "⚡" : "🗑️";
-                const dateStr = itemDate.toLocaleDateString('en-IN') + ' ' + itemDate.toLocaleTimeString('en-IN', {hour: '2-digit', minute:'2-digit'});
+                const label = temporaryTimers[item.id] ? "⚡ Undo (3s)" : "🗑️ Delete";
+
                 container.innerHTML += `
                     <div class="item ${isUndo}" id="item-${item.id}">
-                        <div class="item-info">
-                            <strong>${item.purpose}</strong><br>
-                            <small style="color:#7f8c8d;">₹${item.price.toFixed(2)}</small>
-                            <div class="item-date">${dateStr}</div>
-                        </div>
-                        <button class="btn-danger action-btn btn-small" onclick="handleActionClick(${item.id})">${label}</button>
+                        <div><strong>${item.purpose}</strong><br><small style="color:gray;">₹${item.price.toFixed(2)}</small></div>
+                        <button class="btn-danger action-btn" style="width:auto; padding: 5px 10px; font-size:12px;" onclick="handleActionClick(${item.id})">${label}</button>
                     </div>`;
             });
-            if (container.innerHTML === '') {
-                container.innerHTML = '<p style="text-align: center; color: #7f8c8d;">No expenses</p>';
-            }
+
             document.getElementById('total-day').innerText = dayTotal.toLocaleString('en-IN');
-            document.getElementById('total-month').innerText = monthTotal.toLocaleString('en-IN');
+            document.getElementById('total-month').innerText = (dayTotal * 30).toLocaleString('en-IN');
             document.getElementById('total-year').innerText = (dayTotal * 365).toLocaleString('en-IN');
-        }
-        function updateAnalytics() {
-            const now = new Date();
-            const currentMonth = now.getMonth();
-            const currentYear = now.getFullYear();
-            const currentDate = now.getDate();
-            let todayTotal = 0, weekTotal = 0, monthTotal = 0;
-            const categoryStats = {};
-            expenses.forEach(item => {
-                const itemDate = new Date(item.date);
-                const daysAgo = (now - itemDate) / (1000 * 60 * 60 * 24);
-                if (itemDate.getDate() === currentDate && itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear) {
-                    todayTotal += item.price;
-                }
-                if (daysAgo <= 7 && daysAgo >= 0) {
-                    weekTotal += item.price;
-                }
-                if (itemDate.getMonth() === currentMonth && itemDate.getFullYear() === currentYear) {
-                    monthTotal += item.price;
-                }
-                categoryStats[item.purpose] = (categoryStats[item.purpose] || 0) + item.price;
-            });
-            const daysInMonth = (new Date(currentYear, currentMonth + 1, 0)).getDate();
-            const avgPerDay = monthTotal / daysInMonth;
-            document.getElementById('analytics-today').innerText = todayTotal.toFixed(0);
-            document.getElementById('analytics-week').innerText = weekTotal.toFixed(0);
-            document.getElementById('analytics-month').innerText = monthTotal.toFixed(0);
-            document.getElementById('analytics-avg').innerText = avgPerDay.toFixed(0);
-            const categoryContainer = document.getElementById('category-breakdown');
-            categoryContainer.innerHTML = '';
-            Object.entries(categoryStats).sort((a, b) => b[1] - a[1]).slice(0, 5).forEach(([category, amount]) => {
-                const percentage = monthTotal > 0 ? (amount / monthTotal) * 100 : 0;
-                categoryContainer.innerHTML += `
-                    <div style="margin-bottom: 15px;">
-                        <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                            <span>${category}</span>
-                            <strong>₹${amount.toFixed(0)}</strong>
-                        </div>
-                        <div class="budget-bar">
-                            <div class="budget-fill" style="width: ${percentage}%; background: #3498db;"></div>
-                        </div>
-                    </div>
-                `;
-            });
-            const dayStats = {};
-            expenses.forEach(item => {
-                const itemDate = new Date(item.date).toLocaleDateString('en-IN');
-                dayStats[itemDate] = (dayStats[itemDate] || 0) + item.price;
-            });
-            const topDaysContainer = document.getElementById('top-days');
-            topDaysContainer.innerHTML = '';
-            Object.entries(dayStats).sort((a, b) => b[1] - a[1]).slice(0, 5).forEach(([date, amount]) => {
-                topDaysContainer.innerHTML += `
-                    <div style="display: flex; justify-content: space-between; padding: 8px; background: #f0f0f0; margin-bottom: 5px; border-radius: 4px;">
-                        <span>${date}</span>
-                        <strong>₹${amount.toFixed(0)}</strong>
-                    </div>
-                `;
-            });
-        }
-        function setBudget() {
-            const budgetInput = document.getElementById('budget-input');
-            const amount = parseFloat(budgetInput.value);
-            if (amount <= 0) return alert("Valid budget?");
-            dailyBudget = amount;
-            localStorage.setItem('wallet_budget', dailyBudget);
-            document.getElementById('display-budget').innerText = dailyBudget.toFixed(0);
-            document.getElementById('budget-card').style.display = 'block';
-            budgetInput.value = '';
-            checkBudget();
-            updateBudgetDisplay();
-            alert('✅ Budget: ₹' + dailyBudget);
-        }
-        function checkBudget() {
-            if (dailyBudget <= 0) return;
-            const now = new Date();
-            let todayTotal = 0;
-            expenses.forEach(item => {
-                const itemDate = new Date(item.date);
-                if (itemDate.getDate() === now.getDate() && itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear()) {
-                    todayTotal += item.price;
-                }
-            });
-            const percentage = (todayTotal / dailyBudget) * 100;
-            const budgetCard = document.getElementById('budget-card');
-            budgetCard.style.display = 'block';
-            if (percentage >= 100) {
-                budgetCard.classList.add('warning');
-                document.getElementById('budget-status').innerText = `⚠️ Over (${percentage.toFixed(0)}%)`;
-            } else if (percentage >= 80) {
-                budgetCard.classList.add('warning');
-                document.getElementById('budget-status').innerText = `⚠️ 80% (${percentage.toFixed(0)}%)`;
-            } else {
-                budgetCard.classList.remove('warning');
-                document.getElementById('budget-status').innerText = `✅ ₹${(dailyBudget - todayTotal).toFixed(0)}`;
-            }
-        }
-        function updateBudgetDisplay() {
-            if (dailyBudget <= 0) {
-                document.getElementById('budget-progress').style.display = 'none';
-                document.getElementById('budget-alerts').innerHTML = '<p>No budget set.</p>';
-                return;
-            }
-            const now = new Date();
-            let todayTotal = 0;
-            expenses.forEach(item => {
-                const itemDate = new Date(item.date);
-                if (itemDate.getDate() === now.getDate() && itemDate.getMonth() === now.getMonth() && itemDate.getFullYear() === now.getFullYear()) {
-                    todayTotal += item.price;
-                }
-            });
-            document.getElementById('budget-progress').style.display = 'block';
-            const percentage = Math.min((todayTotal / dailyBudget) * 100, 100);
-            const budgetFill = document.getElementById('budget-fill');
-            budgetFill.style.width = percentage + '%';
-            budgetFill.innerText = percentage.toFixed(0) + '%';
-            if (percentage >= 100) {
-                budgetFill.classList.add('exceeded');
-                document.getElementById('budget-message').innerText = `Over by ₹${(todayTotal - dailyBudget).toFixed(0)}`;
-            } else {
-                budgetFill.classList.remove('exceeded');
-                document.getElementById('budget-message').innerText = `₹${(dailyBudget - todayTotal).toFixed(0)} left`;
-            }
-        }
-        function addRecurringExpense() {
-            const name = document.getElementById('recurring-name').value;
-            const amount = parseFloat(document.getElementById('recurring-amount').value);
-            const frequency = document.getElementById('recurring-frequency').value;
-            if (!name || amount <= 0) return alert("Fill all fields.");
-            const recurring = {
-                id: Date.now(),
-                name,
-                amount,
-                frequency,
-                lastAdded: new Date().toISOString()
-            };
-            recurringExpenses.push(recurring);
-            localStorage.setItem('wallet_recurring', JSON.stringify(recurringExpenses));
-            renderRecurringExpenses();
-            document.getElementById('recurring-name').value = '';
-            document.getElementById('recurring-amount').value = '';
-            alert('✅ Added!');
-        }
-        function removeRecurringExpense(id) {
-            if (confirm("Remove?")) {
-                recurringExpenses = recurringExpenses.filter(r => r.id !== id);
-                localStorage.setItem('wallet_recurring', JSON.stringify(recurringExpenses));
-                renderRecurringExpenses();
-            }
-        }
-        function renderRecurringExpenses() {
-            const container = document.getElementById('recurring-list');
-            container.innerHTML = '';
-            if (recurringExpenses.length === 0) {
-                container.innerHTML = '<p>No recurring expenses.</p>';
-                return;
-            }
-            recurringExpenses.forEach(r => {
-                container.innerHTML += `
-                    <div class="recurring-item">
-                        <div>
-                            <strong>${r.name}</strong><br>
-                            <small>₹${r.amount.toFixed(0)} • ${r.frequency}</small>
-                        </div>
-                        <button class="btn-danger btn-small" onclick="removeRecurringExpense(${r.id})">Remove</button>
-                    </div>
-                `;
-            });
-        }
-        function checkRecurringExpenses() {
-            const now = new Date();
-            recurringExpenses.forEach(recurring => {
-                const lastAdded = new Date(recurring.lastAdded);
-                let shouldAdd = false;
-                if (recurring.frequency === 'daily') {
-                    shouldAdd = lastAdded.getDate() !== now.getDate();
-                } else if (recurring.frequency === 'weekly') {
-                    const daysDiff = (now - lastAdded) / (1000 * 60 * 60 * 24);
-                    shouldAdd = daysDiff >= 7;
-                } else if (recurring.frequency === 'monthly') {
-                    shouldAdd = lastAdded.getMonth() !== now.getMonth();
-                }
-                if (shouldAdd) {
-                    expenses.unshift({
-                        id: Date.now(),
-                        purpose: recurring.name,
-                        price: recurring.amount,
-                        date: new Date().toISOString()
-                    });
-                    recurring.lastAdded = new Date().toISOString();
-                }
-            });
-            localStorage.setItem('wallet_expenses', JSON.stringify(expenses));
-            localStorage.setItem('wallet_recurring', JSON.stringify(recurringExpenses));
-            renderLedger();
-        }
-        function exportCSV() {
-            let csv = 'Date,Category,Amount\n';
-            expenses.forEach(item => {
-                const date = new Date(item.date).toLocaleDateString('en-IN');
-                csv += `${date},"${item.purpose}",${item.price}\n`;
-            });
-            downloadFile(csv, 'expenses.csv', 'text/csv');
-            alert('✅ Exported!');
-        }
-        function exportJSON() {
-            const data = { expenses, recurringExpenses, budget: dailyBudget, date: new Date().toISOString() };
-            downloadFile(JSON.stringify(data, null, 2), 'backup.json', 'application/json');
-            alert('✅ Backup created!');
-        }
-        function downloadFile(content, filename, type) {
-            const element = document.createElement('a');
-            element.setAttribute('href', 'data:' + type + ';charset=utf-8,' + encodeURIComponent(content));
-            element.setAttribute('download', filename);
-            element.style.display = 'none';
-            document.body.appendChild(element);
-            element.click();
-            document.body.removeChild(element);
-        }
-        function printReport() {
-            let html = '<h2>Expense Report</h2>';
-            html += '<p>Generated: ' + new Date().toLocaleString('en-IN') + '</p>';
-            html += '<table border="1" cellpadding="10" style="width:100%; border-collapse: collapse;">';
-            html += '<tr><th>Date</th><th>Category</th><th>Amount</th></tr>';
-            expenses.forEach(item => {
-                const date = new Date(item.date).toLocaleDateString('en-IN');
-                html += `<tr><td>${date}</td><td>${item.purpose}</td><td>₹${item.price.toFixed(0)}</td></tr>`;
-            });
-            html += '</table>';
-            html += '<p><strong>Total: ₹' + expenses.reduce((sum, e) => sum + e.price, 0).toFixed(0) + '</strong></p>';
-            const newWindow = window.open('', '', 'height=400,width=600');
-            newWindow.document.write(html);
-            newWindow.document.close();
-            newWindow.print();
-        }
-        function clearAllData() {
-            if (confirm("Delete all?")) {
-                if (confirm("Really?")) {
-                    localStorage.clear();
-                    location.reload();
-                }
-            }
-        }
-        function toggleDarkMode() {
-            document.body.classList.toggle('dark-mode');
-            const isDarkMode = document.body.classList.contains('dark-mode');
-            localStorage.setItem('wallet_dark_mode', isDarkMode);
-        }
-        function restoreDarkMode() {
-            const isDarkMode = localStorage.getItem('wallet_dark_mode') === 'true';
-            if (isDarkMode) {
-                document.body.classList.add('dark-mode');
-            }
-        }
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        alert('✅ App installed!');
-                    }
-                    deferredPrompt = null;
-                });
-            } else {
-                alert('Already installed or unavailable.');
-            }
-        }
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed:', err));
         }
     </script>
 </body>
